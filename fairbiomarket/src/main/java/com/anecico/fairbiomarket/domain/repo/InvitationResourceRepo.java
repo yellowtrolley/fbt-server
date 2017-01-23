@@ -1,6 +1,7 @@
 package com.anecico.fairbiomarket.domain.repo;
 
 import com.anecico.fairbiomarket.domain.model.Invitation;
+import com.anecico.fairbiomarket.domain.repo.mongo.InvitationRepo;
 import io.katharsis.queryParams.QueryParams;
 import io.katharsis.repository.annotations.JsonApiFindAll;
 import io.katharsis.repository.annotations.JsonApiFindOne;
