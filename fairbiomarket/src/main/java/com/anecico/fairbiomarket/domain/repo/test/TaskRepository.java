@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anecico.fairbiomarket.domain.repo;
+package com.anecico.fairbiomarket.domain.repo.test;
 
-import com.anecico.fairbiomarket.domain.model.Project;
-import com.anecico.fairbiomarket.domain.model.Task;
+import com.anecico.fairbiomarket.domain.model.test.Task;
 import com.google.common.collect.Iterables;
 import io.katharsis.queryParams.QueryParams;
 import io.katharsis.repository.annotations.*;
@@ -25,30 +24,40 @@ import io.katharsis.resource.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@JsonApiResourceRepository(Project.class)
 @Component
-public class ProjectRepository {
-    private static final Map<Long, Project> REPOSITORY = new ConcurrentHashMap<>();
-    private static final AtomicLong ID_GENERATOR = new AtomicLong(124);
-    private final TaskRepository taskRepository;
+@JsonApiResourceRepository(Task.class)
+@Validated
+public class TaskRepository {
+    private static final Map<Long, Task> REPOSITORY = new ConcurrentHashMap<>();
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(4);
+
+    private final ProjectRepository projectRepository;
 
     @Autowired
     @Lazy
-    public ProjectRepository(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-        Project project = new Project(123L);
-        project.setName("Great Project");
-        save(project);
+    public TaskRepository(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+        Task task = new Task(1L, "Create tasks");
+        task.setProjectId(123L);
+        save(task);
+        task = new Task(2L, "Make coffee");
+        task.setProjectId(123L);
+        save(task);
+        task = new Task(3L, "Do things");
+        task.setProjectId(123L);
+        save(task);
     }
 
     @JsonApiSave
-    public <S extends Project> S save(S entity) {
+    public <S extends Task> S save(@Valid S entity) {
         if (entity.getId() == null) {
             entity.setId(ID_GENERATOR.getAndIncrement());
         }
@@ -57,42 +66,33 @@ public class ProjectRepository {
     }
 
     @JsonApiFindOne
-    public Project findOne(Long projectId, QueryParams requestParams) {
-        if (projectId == null) {
-            return null;
-        }
-        Project project = REPOSITORY.get(projectId);
-        if (project == null) {
+    public Task findOne(Long taskId, QueryParams requestParams) {
+        Task task = REPOSITORY.get(taskId);
+        if (task == null) {
             throw new ResourceNotFoundException("Project not found!");
         }
-        if (project.getTasks().isEmpty()) {
-            Iterable<Task> tasks = taskRepository.findAll(null);
-            tasks.forEach(task -> {
-                if (task.getProjectId().equals(project.getId())) {
-                    project.getTasks().add(task);
-                }
-            });
-            save(project);
+        if (task.getProject() == null) {
+            task.setProject(projectRepository.findOne(task.getProjectId(), null));
         }
-        return project;
+        return task;
     }
 
     @JsonApiFindAll
-    public Iterable<Project> findAll(QueryParams requestParams) {
+    public Iterable<Task> findAll(QueryParams requestParams) {
         return REPOSITORY.values();
     }
 
     @JsonApiFindAllWithIds
-    public Iterable<Project> findAll(Iterable<Long> projectIds, QueryParams requestParams) {
+    public Iterable<Task> findAll(Iterable<Long> taskIds, QueryParams requestParams) {
         return REPOSITORY.entrySet()
                 .stream()
-                .filter(p -> Iterables.contains(projectIds, p.getKey()))
+                .filter(p -> Iterables.contains(taskIds, p.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
                 .values();
     }
 
     @JsonApiDelete
-    public void delete(Long projectId) {
-        REPOSITORY.remove(projectId);
+    public void delete(Long taskId) {
+        REPOSITORY.remove(taskId);
     }
 }

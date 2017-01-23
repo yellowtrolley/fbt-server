@@ -1,6 +1,6 @@
-package com.anecico.fairbiomarket.domain.repo.mongo;
+package com.anecico.fairbiomarket.domain.repo.test;
 
-import com.anecico.fairbiomarket.domain.model.Invitation;
+import com.anecico.fairbiomarket.domain.model.test.Invitation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

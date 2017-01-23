@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anecico.fairbiomarket.domain.model;
+package com.anecico.fairbiomarket.domain.model.test;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.katharsis.resource.annotations.JsonApiId;
