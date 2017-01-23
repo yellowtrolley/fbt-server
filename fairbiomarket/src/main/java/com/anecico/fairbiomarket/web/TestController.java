@@ -1,4 +1,4 @@
-package com.anecico.web;
+package com.anecico.fairbiomarket.web;
 
 import io.katharsis.resource.registry.ResourceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;

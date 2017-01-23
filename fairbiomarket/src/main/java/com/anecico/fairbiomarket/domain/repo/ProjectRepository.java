@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anecico.domain.repo;
+package com.anecico.fairbiomarket.domain.repo;
 
-import com.anecico.domain.model.Project;
-import com.anecico.domain.model.Task;
+import com.anecico.fairbiomarket.domain.model.Project;
+import com.anecico.fairbiomarket.domain.model.Task;
 import com.google.common.collect.Iterables;
 import io.katharsis.queryParams.QueryParams;
 import io.katharsis.repository.annotations.*;

@@ -14,42 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anecico.domain.model;
+package com.anecico.fairbiomarket.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.katharsis.resource.annotations.JsonApiId;
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
+import io.katharsis.resource.annotations.JsonApiToMany;
 
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
-@JsonApiResource(type = "tasks")
-public class Task {
+@JsonApiResource(type = "projects")
+public class Project {
 
     @JsonApiId
     private Long id;
 
-    @JsonProperty("my-name")
+    @JsonProperty
     private String name;
-    
-    @Size(max = 20, message="Description may not exceed {max} characters.")
-    private String description;
 
-    @JsonIgnore
-    private Long projectId;
+    @JsonApiToMany
+    private List<Task> tasks = new ArrayList<>();
 
-    @JsonApiToOne
-    @JsonApiIncludeByDefault
-    private Project project;
-
-    public Task() {
-    }
-
-    public Task(Long id, String name) {
+    public Project(Long id) {
         this.id = id;
-        this.name = name;
     }
 
     public Long getId() {
@@ -68,27 +56,11 @@ public class Task {
         this.name = name;
     }
 
-    public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Project getProject() {
-        return project;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

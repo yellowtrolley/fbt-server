@@ -14,30 +14,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anecico.domain.model;
+package com.anecico.fairbiomarket.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.katharsis.resource.annotations.JsonApiId;
+import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToMany;
+import io.katharsis.resource.annotations.JsonApiToOne;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.Size;
 
-@JsonApiResource(type = "projects")
-public class Project {
+@JsonApiResource(type = "tasks")
+public class Task {
 
     @JsonApiId
     private Long id;
 
-    @JsonProperty
+    @JsonProperty("my-name")
     private String name;
+    
+    @Size(max = 20, message="Description may not exceed {max} characters.")
+    private String description;
 
-    @JsonApiToMany
-    private List<Task> tasks = new ArrayList<>();
+    @JsonIgnore
+    private Long projectId;
 
-    public Project(Long id) {
+    @JsonApiToOne
+    @JsonApiIncludeByDefault
+    private Project project;
+
+    public Task() {
+    }
+
+    public Task(Long id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public Long getId() {
@@ -56,11 +68,27 @@ public class Project {
         this.name = name;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Project getProject() {
+        return project;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }

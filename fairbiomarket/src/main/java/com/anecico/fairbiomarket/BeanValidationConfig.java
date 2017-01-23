@@ -1,4 +1,4 @@
-package com.anecico;
+package com.anecico.fairbiomarket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

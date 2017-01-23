@@ -1,4 +1,4 @@
-package com.anecico.domain.mapper;
+package com.anecico.fairbiomarket.domain.mapper;
 
 import io.katharsis.errorhandling.ErrorData;
 import io.katharsis.errorhandling.ErrorResponse;

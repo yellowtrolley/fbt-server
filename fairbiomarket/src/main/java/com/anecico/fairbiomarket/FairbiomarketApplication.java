@@ -1,4 +1,4 @@
-package com.anecico;
+package com.anecico.fairbiomarket;
 
 import io.katharsis.spring.boot.KatharsisConfigV2;
 import org.springframework.boot.SpringApplication;
