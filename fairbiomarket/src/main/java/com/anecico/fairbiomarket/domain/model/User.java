@@ -1,5 +1,6 @@
 package com.anecico.fairbiomarket.domain.model;
 
+import com.anecico.fairbiomarket.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiResource;
@@ -53,6 +54,8 @@ public class User {
     @JsonProperty
     private String phone;
 
+    // TODO Refactor User -> Account -> AccountType
+    private AccountType accountType;
 
     public String getId() {
         return id;
@@ -140,5 +143,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 }
