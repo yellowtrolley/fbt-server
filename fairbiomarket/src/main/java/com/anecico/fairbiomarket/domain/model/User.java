@@ -49,9 +49,6 @@ public class User {
     private boolean locked;
 
     @JsonProperty
-    private String photoId;
-
-    @JsonProperty
     private String phone;
 
     // TODO Refactor User -> Account -> AccountType
@@ -127,14 +124,6 @@ public class User {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
-    }
-
-    public String getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(String photoId) {
-        this.photoId = photoId;
     }
 
     public String getPhone() {
