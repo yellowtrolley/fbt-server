@@ -43,6 +43,12 @@ public class Item {
     @DBRef
     private User seller;
 
+    @JsonProperty
+    private String[] imageIds;
+
+
+
+
     public String getId() {
         return id;
     }
@@ -113,5 +119,13 @@ public class Item {
 
     public void setSeller(User seller) {
         this.seller = seller;
+    }
+
+    public String[] getImageIds() {
+        return imageIds;
+    }
+
+    public void setImageIds(String[] imageIds) {
+        this.imageIds = imageIds;
     }
 }
