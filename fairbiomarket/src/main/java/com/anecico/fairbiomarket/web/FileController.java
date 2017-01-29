@@ -21,9 +21,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by guerrpa on 23/01/2017.
@@ -37,17 +36,22 @@ public class FileController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping(value = "/image", method = RequestMethod.POST)
-    public String handleImageUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-        InputStream is = resizeImageAndGetInputStream(file);
+    @RequestMapping(value = "/images", method = RequestMethod.POST)
+    public List<String> handleImageUpload(@RequestParam("files[]") MultipartFile[] files, RedirectAttributes redirectAttributes) {
+        List<String> imageIds = new ArrayList<>();
 
-        String fileName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        DBObject metaData = new BasicDBObject();
-        metaData.put("user", "TODO USER ID"); // TODO
+        for (MultipartFile file : files) {
+            InputStream is = resizeImageAndGetInputStream(file);
 
-        String imageId = fileRepository.storeFile(is, fileName, file.getContentType(), metaData);
+            String fileName = String.valueOf(Calendar.getInstance().getTimeInMillis());
+            DBObject metaData = new BasicDBObject();
+            metaData.put("user", "TODO USER ID"); // TODO
 
-        return imageId;
+            String imageId = fileRepository.storeFile(is, fileName, file.getContentType(), metaData);
+            imageIds.add(imageId);
+        }
+
+        return imageIds;
     }
 
 
