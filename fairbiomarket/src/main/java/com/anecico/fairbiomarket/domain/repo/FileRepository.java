@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import com.mongodb.gridfs.GridFSDBFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,8 +26,10 @@ public class FileRepository {
 		return  gridFsTemplate.store(inputStream, filename, contentType, metaData).toString();
 	}
 	
-	public GridFSFile getGridFSFile(String id) {
-		return  gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+	public GridFsResource getGridFSFile(String id) {
+		GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+		GridFsResource gridFsResource = gridFsTemplate.getResource(gridFSFile.getFilename());
+		return  gridFsResource;
 	}
 	/*
 	public GridFsResource getResource(String location) {

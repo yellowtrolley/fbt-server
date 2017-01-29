@@ -3,15 +3,16 @@ package com.anecico.fairbiomarket.web;
 import com.anecico.fairbiomarket.domain.repo.FileRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import io.katharsis.resource.registry.ResourceRegistry;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.Resource;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.List;
@@ -28,7 +30,8 @@ import java.util.List;
  * Created by guerrpa on 23/01/2017.
  */
 @RestController
-public class FileController {
+@RequestMapping("images")
+public class ImageController {
     @Autowired
     private FileRepository fileRepository;
     @Value("${profile.image.max.width}") private Integer imageMaxWidth;
@@ -36,7 +39,7 @@ public class FileController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping(value = "/images", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public List<String> handleImageUpload(@RequestParam("files[]") MultipartFile[] files, RedirectAttributes redirectAttributes) {
         List<String> imageIds = new ArrayList<>();
 
@@ -52,6 +55,13 @@ public class FileController {
         }
 
         return imageIds;
+    }
+
+    @RequestMapping(value = "/{fileId}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> getImageAsResource(@PathVariable("fileId") String fileId) throws IOException {
+        GridFsResource gridFsResource = fileRepository. getGridFSFile(fileId);
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<>(gridFsResource, headers, HttpStatus.OK);
     }
 
 

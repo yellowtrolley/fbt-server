@@ -44,7 +44,7 @@ public class Item {
     private User seller;
 
     @JsonProperty
-    private String[] imageIds;
+    private List<String> imageids;
 
 
 
@@ -121,11 +121,11 @@ public class Item {
         this.seller = seller;
     }
 
-    public String[] getImageIds() {
-        return imageIds;
+    public List<String> getImageids() {
+        return imageids;
     }
 
-    public void setImageIds(String[] imageIds) {
-        this.imageIds = imageIds;
+    public void setImageids(List<String> imageids) {
+        this.imageids = imageids;
     }
 }
