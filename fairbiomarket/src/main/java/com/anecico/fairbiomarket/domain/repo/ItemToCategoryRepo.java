@@ -30,13 +30,13 @@ import java.util.List;
 
 @JsonApiRelationshipRepository(source = Item.class, target = Category.class)
 @Component
-public class ItemToCategoryRepository {
+public class ItemToCategoryRepo {
 
     private final ItemResourceRepo itemResourceRepo;
     private final CategoryResourceRepo categoryResourceRepo;
 
     @Autowired
-    public ItemToCategoryRepository(ItemResourceRepo itemResourceRepo, CategoryResourceRepo categoryResourceRepo) {
+    public ItemToCategoryRepo(ItemResourceRepo itemResourceRepo, CategoryResourceRepo categoryResourceRepo) {
         this.itemResourceRepo = itemResourceRepo;
         this.categoryResourceRepo = categoryResourceRepo;
     }

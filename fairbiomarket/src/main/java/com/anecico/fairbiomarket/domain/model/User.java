@@ -4,6 +4,7 @@ import com.anecico.fairbiomarket.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiResource;
+import io.katharsis.resource.annotations.JsonApiToMany;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -30,7 +31,7 @@ public class User {
     private Date activationDate;
 
     @DBRef
-//    @JsonApiToMany
+    @JsonApiToMany
     private List<Role> roles;
 
     @JsonProperty
