@@ -20,7 +20,7 @@ public class Item {
     private String name;
 
     @DBRef
-    @JsonApiToMany
+    @JsonApiToMany(lazy = false)
     private List<Category> categories;
 
     @JsonProperty

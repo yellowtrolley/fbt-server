@@ -31,7 +31,7 @@ public class User {
     private Date activationDate;
 
     @DBRef
-    @JsonApiToMany
+    @JsonApiToMany(lazy = false)
     private List<Role> roles;
 
     @JsonProperty
