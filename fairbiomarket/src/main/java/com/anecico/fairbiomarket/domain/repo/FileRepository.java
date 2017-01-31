@@ -1,16 +1,15 @@
 package com.anecico.fairbiomarket.domain.repo;
 
-import java.io.InputStream;
-
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
-import com.mongodb.gridfs.GridFSDBFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsCriteria;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Component;
+
+import java.io.InputStream;
 
 
 @Component
@@ -26,23 +25,22 @@ public class FileRepository {
 		return  gridFsTemplate.store(inputStream, filename, contentType, metaData).toString();
 	}
 	
-	public GridFsResource getGridFSFile(String id) {
-		GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
-		GridFsResource gridFsResource = gridFsTemplate.getResource(gridFSFile.getFilename());
-		return  gridFsResource;
+	public GridFSFile getGridFSFile(String id) {
+		return gridFsTemplate.findOne(new Query(GridFsCriteria.where("_id").is(id)));
 	}
-	/*
-	public GridFsResource getResource(String location) {
-		 return gridFsMongoTemplate.getResource(location);
-	}
-	*/
 
-	public GridFsResource[] getResources(String fileNamePattern) {
+	public GridFsResource getGridFsResource(String id) {
+        GridFSFile gridFSFile = getGridFSFile(id);
+        return  gridFsTemplate.getResource(gridFSFile.getFilename());
+	}
+
+
+	public GridFsResource[] getGridFsResources(String fileNamePattern) {
 		return gridFsTemplate.getResources(fileNamePattern);
 
 	}
 
 	public void deleteFSFile(Object id) {
-		gridFsTemplate.delete(new Query(Criteria.where("_id").is(id)));
+		gridFsTemplate.delete(new Query(GridFsCriteria.where("_id").is(id)));
 	}
 }

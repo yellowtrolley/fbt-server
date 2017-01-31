@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
-import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,15 +24,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by guerrpa on 23/01/2017.
  */
 @RestController
-@RequestMapping("images")
-public class ImageController {
+@RequestMapping("files")
+public class FileController {
     @Autowired
     private FileRepository fileRepository;
     @Value("${profile.image.max.width}") private Integer imageMaxWidth;
@@ -59,9 +62,21 @@ public class ImageController {
 
     @RequestMapping(value = "/{fileId}", method = RequestMethod.GET)
     public ResponseEntity<Resource> getImageAsResource(@PathVariable("fileId") String fileId) throws IOException {
-        GridFsResource gridFsResource = fileRepository. getGridFSFile(fileId);
+        GridFsResource gridFsResource = fileRepository.getGridFsResource(fileId);
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<>(gridFsResource, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{fileId}", method = RequestMethod.DELETE)
+    public String deleteResource(@PathVariable("fileId") String fileId) throws IOException {
+        GridFSFile gridFSFile = fileRepository.getGridFSFile(fileId);
+
+        if (Objects.equals(gridFSFile.getMetadata().get("user"), "TODO USER ID")) { // TODO
+            fileRepository.deleteFSFile(fileId);
+        }
+
+        // Returnin empty string prevents "ajax jquery delete xml parsing error no element found" in browser console
+        return "";
     }
 
 
