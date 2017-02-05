@@ -1,0 +1,47 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'fairbiomarket'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile group: 'io.katharsis', name: 'katharsis-spring', version: '2.8.2'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+
+    testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.9.0'
+    testCompile group: 'com.jayway.restassured', name: 'json-schema-validator', version: '2.9.0'
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.5'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
